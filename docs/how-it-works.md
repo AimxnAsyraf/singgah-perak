@@ -121,7 +121,7 @@ The dashboard has four parts:
 |---|---|
 | Problem numbers (with sources) | Seller names (marked *Contoh*) |
 | Attractions (Ubudiah, Lenggong, Gua Tempurung…) | Prices (rough estimates) |
-| ETS routes (Padang Besar, JB Sentral, KL Sentral → Ipoh) | Train times: from train36.com, **check with KTMB** |
+| ETS routes (Padang Besar, JB Sentral, KL Sentral → Ipoh) | Train times: official KTMB data once `update_trains.py` is run; until then from train36.com |
 | Cross-border DuitNow QR exists (PromptPay, QRIS) | QR code: a placeholder, no payment |
 | | Dashboard bookings: generated samples |
 | | Impact calculator: an estimate, not a forecast |
@@ -145,7 +145,7 @@ It's a **static website**: HTML, CSS and JavaScript only. Everything runs in the
 
 ```
 public/
-  index.html        → loads core.js, i18n.js, planner.js
+  index.html        → loads trains.js, core.js, i18n.js, planner.js
   seller.html       → loads core.js, i18n.js, seller.js
   dashboard.html    → loads chart.umd.js, leaflet.js, core.js, i18n.js, dashboard.js
   assets/
@@ -162,7 +162,8 @@ public/
 
 | Piece | What it is |
 |---|---|
-| `ORIGINS` | The 3 countries: train route, train number and times, payment note |
+| `ORIGINS` | The 3 countries: train route, fallback train number and times, payment note |
+| `KTMB_TRAINS` (from `trains.js`) | Official KTMB trains in and out for each country. Replaces the fallback when present. |
 | `STOPS` | Every place in a plan: name, district, price, seller, description in 5 languages |
 | `SELLERS` | The 11 sample kampung sellers |
 | `DAY_BLOCKS` | The 4 full-day blocks (heritage, nature, food, beach) |
@@ -192,7 +193,7 @@ public/
 
 | I want to… | Edit |
 |---|---|
-| Fix a train time | `ORIGINS` → `train` in `public/assets/js/core.js` |
+| Refresh train times | Run `python3 scripts/update_trains.py` (official KTMB data → `trains.js`). The fallback times are in `ORIGINS` in `core.js`. |
 | Change a price or description | `STOPS` in `core.js` |
 | Add a new place | Add it to `STOPS`, then put its key into a `DAY_BLOCKS` list |
 | Change any text on screen | `public/assets/js/i18n.js` (change it in every language) |

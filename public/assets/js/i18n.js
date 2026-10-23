@@ -280,6 +280,7 @@ const STRINGS = {
 // Problem section, Singgah vs Bermalam card, sellers on route, train source.
 const PLANNER_EXTRA = {
   en: {
+    train_src_official: "Official KTMB timetable ({src})",
     nav_seller: "For sellers",
     prob_title: "Why Perak needs this",
     prob_intl: "International arrivals to Perak, 2025",
@@ -301,6 +302,7 @@ const PLANNER_EXTRA = {
     extras_remove: "Remove",
   },
   ms: {
+    train_src_official: "Jadual rasmi KTMB ({src})",
     nav_seller: "Untuk peniaga",
     prob_title: "Kenapa Perak perlukan ini",
     prob_intl: "Ketibaan pelancong antarabangsa ke Perak, 2025",
@@ -322,6 +324,7 @@ const PLANNER_EXTRA = {
     extras_remove: "Buang",
   },
   th: {
+    train_src_official: "ตารางเวลาทางการของ KTMB ({src})",
     nav_seller: "สำหรับผู้ประกอบการ",
     prob_title: "ทำไมเประต้องการสิ่งนี้",
     prob_intl: "นักท่องเที่ยวต่างชาติมาเประ ปี 2025",
@@ -343,6 +346,7 @@ const PLANNER_EXTRA = {
     extras_remove: "ลบ",
   },
   id: {
+    train_src_official: "Jadwal resmi KTMB ({src})",
     nav_seller: "Untuk penjual",
     prob_title: "Kenapa Perak membutuhkan ini",
     prob_intl: "Kedatangan wisatawan internasional ke Perak, 2025",
@@ -364,6 +368,7 @@ const PLANNER_EXTRA = {
     extras_remove: "Hapus",
   },
   zh: {
+    train_src_official: "KTMB官方时刻表（{src}）",
     nav_seller: "商家入驻",
     prob_title: "霹雳为何需要这个",
     prob_intl: "2025年霹雳国际游客抵达人次",

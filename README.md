@@ -52,6 +52,17 @@ Connect the repo in Cloudflare (**Workers & Pages → Create application → Pag
 
 Only `public/` is served, so `docs/` and the README stay in GitHub. Every push to `main` redeploys.
 
+## Update train times (official KTMB data)
+
+KTMB's timetable is published as a GTFS feed on Malaysia's open data portal ([data.gov.my GTFS Static API](https://developer.data.gov.my/realtime-api/gtfs-static)). The script downloads it, picks the ETS trains that fit each trip plan, and writes `public/assets/js/trains.js`:
+
+```bash
+python3 scripts/update_trains.py            # downloads https://api.data.gov.my/gtfs-static/ktmb
+python3 scripts/update_trains.py ktmb.zip   # or use a ZIP you downloaded yourself
+```
+
+It needs only Python 3 (no installs). It prints the trains it picked; commit `trains.js` afterwards. The planner then shows "Jadual rasmi KTMB" with the date the data was pulled.
+
 ## Structure
 
 ```
@@ -65,12 +76,14 @@ public/                      The website (the only folder that gets deployed)
   assets/js/dashboard.js     Dashboard page
   assets/js/seller.js        Seller sign-up page
   assets/css/style.css       Styles (light + dark mode)
+  assets/js/trains.js        Official KTMB train times (generated, don't edit)
+scripts/update_trains.py     Pulls KTMB's GTFS feed into trains.js
 docs/                        Submission drafts (not deployed)
 ```
 
 ## Honest limitations (prototype)
 
-- **Train times come from a third-party site** (train36.com: Padang Besar timetable of 30 Aug 2025, JB Sentral timetable of Feb 2026). A newer KTMB timetable took effect on 1 June 2026, so confirm with KTMB before using them in the proposal. Update them in `ORIGINS` in `public/assets/js/core.js`.
+- **Train times:** the planner uses KTMB's official timetable once `scripts/update_trains.py` has been run (see "Update train times" above). Until then it falls back to times from a third-party site (train36.com), labelled as such.
 - **Seller sign-ups are saved only in the browser** (localStorage). The DuitNow ID field is not stored or checked.
 - **The impact calculator gives estimates, not forecasts.** It multiplies the state's 2026 target by your assumptions.
 - **All seller names are sample data** and marked "Contoh" in the UI.
