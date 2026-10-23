@@ -91,11 +91,7 @@ function renderPlan() {
           el("div", {},
             el("div", { class: "name" }, `🚆 ${tr(leg.title)}`),
             leg.desc ? el("div", { class: "desc" }, tr(leg.desc)) : null,
-            it.leg === "arrive" && o.train
-              ? el("div", { class: "desc" },
-                  `🎫 ${o.train.code} · ${o.train.from} ${o.train.dep} → Ipoh ${o.train.arr} · `,
-                  el("a", { href: o.train.url, target: "_blank", rel: "noopener" }, t("train_src", { src: o.train.src })))
-              : null,
+            trainLine(it.leg === "arrive" ? o.train : o.returnTrain),
             el("span", { class: "pill rail" }, t("rail_tag")),
           ),
           el("div", { class: "rm" }, ""),
@@ -132,6 +128,15 @@ function renderPlan() {
   bookBtn.addEventListener("click", openBooking);
   box.append(bookBtn);
   box.append(el("p", { class: "note" }, `${t("proto_note")} ${t("verify_trains")}`));
+}
+
+// "🎫 EP 9275 · Padang Besar 09:45 → Ipoh 12:44 · source" under a rail leg.
+function trainLine(tr) {
+  if (!tr) return null;
+  return el("div", { class: "desc" },
+    `🎫 ${tr.code} · ${tr.from} ${tr.dep} → ${tr.to || "Ipoh"} ${tr.arr} · `,
+    el("a", { href: tr.url, target: "_blank", rel: "noopener" },
+      t(tr.official ? "train_src_official" : "train_src", { src: tr.src })));
 }
 
 // Sellers registered on seller.html whose district is on this route.

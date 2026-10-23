@@ -112,6 +112,20 @@ const ORIGINS = {
   },
 };
 
+// Official KTMB times from trains.js (scripts/update_trains.py) replace the fallback above.
+if (typeof KTMB_TRAINS !== "undefined" && KTMB_TRAINS) {
+  const src = `KTMB GTFS, data.gov.my, ${KTMB_TRAINS.generated}`;
+  for (const [key, r] of Object.entries(KTMB_TRAINS.routes)) {
+    const o = ORIGINS[key];
+    if (!o) continue;
+    if (r.arrive) {
+      o.train = { ...r.arrive, src, url: KTMB_TRAINS.url, official: true };
+      o.arrive.time = r.arrive.arr;
+    }
+    if (r.depart) o.returnTrain = { ...r.depart, src, url: KTMB_TRAINS.url, official: true };
+  }
+}
+
 // --- Stops -------------------------------------------------------------------
 // spend = rough RM estimate per person; seller = community seller key or null.
 const STOPS = {
@@ -422,7 +436,8 @@ function buildPlan(originKey, days, interests, halal) {
 
   // Last day: short morning, then rail home
   LAST_MORNING.forEach((k, i) => push(days, TIMES_LAST[i], k));
-  items.push({ day: days, time: "12:30", kind: "rail", leg: "depart" });
+  const home = ORIGINS[originKey].returnTrain;
+  items.push({ day: days, time: home ? home.dep : "12:30", kind: "rail", leg: "depart" });
 
   const plan = { origin: originKey, days, nights: days - 1, items, extras: [] };
   plan.sellers = [...new Set(items.filter((x) => x.seller).map((x) => SELLERS[x.seller].name))];
