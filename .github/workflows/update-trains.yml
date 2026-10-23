@@ -1,0 +1,33 @@
+# Refreshes public/assets/js/trains.js from KTMB's official GTFS feed (data.gov.my).
+name: Update KTMB train times
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 1 * * 1" # Mondays 09:17 MYT
+  push:
+    paths:
+      - scripts/update_trains.py
+      - .github/workflows/update-trains.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull KTMB GTFS and pick trains
+        run: python3 scripts/update_trains.py
+      - name: Commit trains.js if it changed
+        run: |
+          if git diff --quiet -- public/assets/js/trains.js; then
+            echo "No change in train times."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/js/trains.js
+          git commit -m "Update KTMB train times from data.gov.my GTFS"
+          git push
