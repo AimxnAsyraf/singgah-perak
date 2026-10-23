@@ -86,7 +86,11 @@ def station_stop_ids(stops):
 
 
 def active_days(calendar, calendar_dates, start):
-    """service_id -> number of days it runs in the DAYS_CHECKED days from start."""
+    """(service_id -> days it runs, days the feed covers) within DAYS_CHECKED days from start.
+
+    Feeds often publish only a couple of weeks ahead, so frequency is measured
+    against the days the feed actually covers, not the whole window.
+    """
     weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     days = [start + dt.timedelta(d) for d in range(DAYS_CHECKED)]
     runs = {}
@@ -103,7 +107,8 @@ def active_days(calendar, calendar_dates, start):
             s.add(d)
         elif c["exception_type"] == "2":
             s.discard(d)
-    return {k: len(v) for k, v in runs.items()}
+    covered = set().union(*runs.values()) if runs else set()
+    return {k: len(v) for k, v in runs.items()}, len(covered)
 
 
 def feed_start(calendar, calendar_dates):
@@ -129,7 +134,9 @@ def build(z):
         sys.exit(f"Station(s) not found in stops.txt: {missing}\nStop names in feed: {names}")
 
     start = feed_start(calendar, calendar_dates)
-    runs = active_days(calendar, calendar_dates, start)
+    runs, covered = active_days(calendar, calendar_dates, start)
+    if not covered:
+        sys.exit(f"No services run in the {DAYS_CHECKED} days from {start}; the feed may be out of date.")
 
     # trip_id -> {station key: (arrival_min, departure_min, stop_sequence)}
     at = {}
@@ -166,16 +173,18 @@ def build(z):
                 })
         ets = [o for o in out if is_ets(o["trip"])]
         out = ets or out
-        regular = [o for o in out if o["days"] >= DAYS_CHECKED * 0.7]
+        regular = [o for o in out if o["days"] >= covered * 0.7]
         return regular or [o for o in out if o["days"] > 0]
 
     def describe(o, frm, to):
         trip = o["trip"]
         code = trip.get("trip_short_name") or trip.get("trip_headsign") or trip.get("trip_id")
+        if code.isdigit() and is_ets(trip):
+            code = f"ETS {code}"
         return {
             "code": code, "service": label(trip), "from": pretty(frm),
             "to": pretty(to), "dep": hhmm(o["dep"]), "arr": hhmm(o["arr"]),
-            "daysPerWeek": round(o["days"] * 7 / DAYS_CHECKED, 1),
+            "daysPerWeek": round(o["days"] * 7 / covered, 1),
         }
 
     result = {}
@@ -193,12 +202,13 @@ def build(z):
             # Latest inbound that still fits the day-1 plan; earliest train home after lunch.
             "arrive": describe(inbound[-1], stn, "IPOH") if inbound else None,
             "depart": describe(outbound[0], "IPOH", stn) if outbound else None,
-            "inboundPerDay": len(options(stn, "IPOH")),
+            "inboundOptions": len(options(stn, "IPOH")),
         }
 
     return {
         "generated": dt.date.today().isoformat(),
         "checkedFrom": start.isoformat(),
+        "daysCovered": covered,
         "feedVersion": feed_info.get("feed_version") or None,
         "feedValidUntil": feed_info.get("feed_end_date") or None,
         "source": "KTMB GTFS Static, data.gov.my",
