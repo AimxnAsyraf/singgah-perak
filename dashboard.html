@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SinggahPerak Dashboard</title>
+  <meta name="description" content="Tourism Perak dashboard for the SinggahPerak prototype.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/vendor/leaflet.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="index.html">Singgah<span>Perak</span></a>
+      <nav class="nav">
+        <a href="index.html" data-i18n="nav_planner"></a>
+        <a href="dashboard.html" aria-current="page" data-i18n="nav_dashboard"></a>
+      </nav>
+      <select id="lang" aria-label="Language"></select>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1 data-i18n="dash_title"></h1>
+      <p data-i18n="dash_sub"></p>
+    </section>
+
+    <div class="section-title" data-i18n="ctx_title"></div>
+    <div class="tiles three">
+      <div class="card tile">
+        <div class="v">10.4M</div>
+        <div class="k" data-i18n="ctx_dom"></div>
+        <div class="src"><span data-i18n="source"></span>: <a href="https://www.thestar.com.my/metro/metro-news/2026/06/26/foreign-visitors-down-domestic-tourists-up-in-perak" target="_blank" rel="noopener">The Star, 26 Jun 2026</a></div>
+      </div>
+      <div class="card tile">
+        <div class="v">−1.5%</div>
+        <div class="k" data-i18n="ctx_intl"></div>
+        <div class="src"><span data-i18n="source"></span>: <a href="https://www.thestar.com.my/metro/metro-news/2026/06/26/foreign-visitors-down-domestic-tourists-up-in-perak" target="_blank" rel="noopener">The Star, 26 Jun 2026</a></div>
+      </div>
+      <div class="card tile">
+        <div class="v">1.1M</div>
+        <div class="k" data-i18n="ctx_target"></div>
+        <div class="src"><span data-i18n="source"></span>: <a href="https://thesun.my/news/malaysia-news/people-issues/perak-targets-regional-tourists-from-thailand-indonesia-and-singapore-for-vm2026/" target="_blank" rel="noopener">The Sun, 2026</a></div>
+      </div>
+    </div>
+
+    <div class="section-title" data-i18n="proto_title"></div>
+    <div class="toolbar" style="margin-bottom:12px">
+      <span style="color:var(--ink-2);font-size:14px" data-i18n="proto_desc"></span>
+      <button class="btn secondary" id="reset" type="button" data-i18n="reset"></button>
+    </div>
+    <div class="tiles" id="metrics"></div>
+
+    <div class="charts" style="margin-top:16px">
+      <div class="card chart-card">
+        <h3 data-i18n="c_origin"></h3>
+        <div class="chart-box"><canvas id="ch-origin"></canvas></div>
+        <details><summary data-i18n="show_table"></summary><table id="tb-origin"></table></details>
+      </div>
+      <div class="card chart-card">
+        <h3 data-i18n="c_nights"></h3>
+        <div class="chart-box"><canvas id="ch-nights"></canvas></div>
+        <details><summary data-i18n="show_table"></summary><table id="tb-nights"></table></details>
+      </div>
+      <div class="card chart-card">
+        <h3 data-i18n="c_district"></h3>
+        <div class="chart-box"><canvas id="ch-district"></canvas></div>
+        <details><summary data-i18n="show_table"></summary><table id="tb-district"></table></details>
+      </div>
+      <div class="card chart-card">
+        <h3 data-i18n="c_map"></h3>
+        <div id="map"></div>
+      </div>
+    </div>
+
+    <div class="section-title" data-i18n="recent"></div>
+    <div class="card" style="overflow-x:auto">
+      <table id="tb-recent"></table>
+    </div>
+  </main>
+
+  <footer class="wrap">
+    <span data-i18n="proto_note"></span>
+  </footer>
+
+  <script src="assets/vendor/chart.umd.js"></script>
+  <script src="assets/vendor/leaflet.js"></script>
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

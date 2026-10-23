@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SinggahPerak</title>
+  <meta name="description" content="Rail-first trips to Perak from Thailand, Singapore and Indonesia, with money going to kampung sellers.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="index.html">Singgah<span>Perak</span></a>
+      <nav class="nav">
+        <a href="index.html" aria-current="page" data-i18n="nav_planner"></a>
+        <a href="dashboard.html" data-i18n="nav_dashboard"></a>
+      </nav>
+      <select id="lang" aria-label="Language"></select>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="tag" data-i18n="tagline"></span>
+      <h1 data-i18n="hero_title"></h1>
+      <p data-i18n="hero_sub"></p>
+    </section>
+
+    <div class="grid-2">
+      <form id="planner" class="card">
+        <div class="field">
+          <span class="label" data-i18n="step_origin"></span>
+          <div class="choices" id="origins"></div>
+        </div>
+        <div class="field">
+          <span class="label" data-i18n="step_days"></span>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="days" value="2"><span data-i18n="dur_2"></span></label>
+            <label class="choice"><input type="radio" name="days" value="3" checked><span data-i18n="dur_3"></span></label>
+            <label class="choice"><input type="radio" name="days" value="4"><span data-i18n="dur_4"></span></label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="label" data-i18n="step_interests"></span>
+          <div class="choices">
+            <label class="choice"><input type="checkbox" name="interest" value="heritage" checked><span>🏛️ <b data-i18n="int_heritage"></b></span></label>
+            <label class="choice"><input type="checkbox" name="interest" value="nature"><span>🌿 <b data-i18n="int_nature"></b></span></label>
+            <label class="choice"><input type="checkbox" name="interest" value="food"><span>🍜 <b data-i18n="int_food"></b></span></label>
+            <label class="choice"><input type="checkbox" name="interest" value="beach"><span>🏝️ <b data-i18n="int_beach"></b></span></label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="toggle"><input type="checkbox" name="halal"> <span data-i18n="halal"></span></label>
+        </div>
+        <button class="btn" type="submit" data-i18n="btn_generate"></button>
+        <div class="why">
+          <strong>🚆 <span data-i18n="why_title"></span></strong>
+          <span data-i18n="why_body"></span>
+        </div>
+      </form>
+
+      <section id="plan" class="card" aria-live="polite">
+        <p class="empty" data-i18n="empty_state"></p>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="book">
+    <div class="demo-banner" data-i18n="modal_demo"></div>
+    <h2 data-i18n="modal_title" style="margin:16px 0 4px"></h2>
+    <div id="book-summary"></div>
+    <div class="qr-wrap"><canvas id="qr" width="180" height="180" aria-hidden="true"></canvas><div class="stamp">DEMO</div></div>
+    <p style="text-align:center;font-size:14px;margin:0" data-i18n="modal_scan"></p>
+    <div class="row">
+      <button class="btn secondary" id="book-cancel" type="button" data-i18n="modal_cancel"></button>
+      <button class="btn" id="book-confirm" type="button" data-i18n="modal_confirm"></button>
+    </div>
+  </dialog>
+
+  <footer class="wrap">
+    <span data-i18n="proto_note"></span>
+    <span data-i18n="verify_trains"></span>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/planner.js"></script>
+</body>
+</html>
