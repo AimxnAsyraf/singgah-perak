@@ -56,6 +56,27 @@ function renderPlan() {
     ),
   );
 
+  // Singgah vs Bermalam: the core problem as one number.
+  const stop = stopoverSpend();
+  const maxBar = Math.max(stop, p.total);
+  const bar = (label, value, cls) =>
+    el("div", { class: "cmp-row" },
+      el("div", { class: "cmp-label" }, label),
+      el("div", { class: "cmp-track" }, el("div", { class: `cmp-bar ${cls}`, style: `width:${Math.max(4, (value / maxBar) * 100)}%` })),
+      el("div", { class: "cmp-val" }, rm(value)),
+    );
+  box.append(
+    el("div", { class: "cmp" },
+      el("div", { class: "cmp-head" },
+        el("strong", {}, t("cmp_title")),
+        el("span", { class: "cmp-x" }, t("cmp_x", { x: (p.total / stop).toFixed(1) })),
+      ),
+      bar(t("cmp_stop"), stop, "stop"),
+      bar(t("cmp_stay"), p.total, "stay"),
+      el("div", { class: "note", style: "margin-top:6px" }, t("cmp_note")),
+    ),
+  );
+
   let lastDay = 0;
   for (const it of p.items) {
     if (it.day !== lastDay) {
@@ -70,6 +91,11 @@ function renderPlan() {
           el("div", {},
             el("div", { class: "name" }, `🚆 ${tr(leg.title)}`),
             leg.desc ? el("div", { class: "desc" }, tr(leg.desc)) : null,
+            it.leg === "arrive" && o.train
+              ? el("div", { class: "desc" },
+                  `🎫 ${o.train.code} · ${o.train.from} ${o.train.dep} → Ipoh ${o.train.arr} · `,
+                  el("a", { href: o.train.url, target: "_blank", rel: "noopener" }, t("train_src", { src: o.train.src })))
+              : null,
             el("span", { class: "pill rail" }, t("rail_tag")),
           ),
           el("div", { class: "rm" }, ""),
@@ -97,6 +123,8 @@ function renderPlan() {
     );
   }
 
+  renderExtras(box, p);
+
   box.append(
     el("div", { class: "pay" }, el("strong", {}, `💳 ${t("pay_label")}`), tr(o.pay)),
   );
@@ -104,6 +132,35 @@ function renderPlan() {
   bookBtn.addEventListener("click", openBooking);
   box.append(bookBtn);
   box.append(el("p", { class: "note" }, `${t("proto_note")} ${t("verify_trains")}`));
+}
+
+// Sellers registered on seller.html whose district is on this route.
+function renderExtras(box, p) {
+  const route = new Set(p.items.filter((x) => x.kind === "stop").map((x) => x.district));
+  const onRoute = loadRegisteredSellers().filter((s) => route.has(s.district));
+  if (!onRoute.length) return;
+
+  const list = el("div", { class: "extras" }, el("strong", {}, `🏡 ${t("extras_title")}`));
+  for (const s of onRoute) {
+    const added = p.extras.some((x) => x.id === s.id);
+    const btn = el("button", { class: `btn ${added ? "secondary" : ""}`, type: "button" }, added ? t("extras_remove") : t("extras_add"));
+    btn.addEventListener("click", () => {
+      if (added) p.extras = p.extras.filter((x) => x.id !== s.id);
+      else p.extras.push({ id: s.id, name: s.name, district: s.district, spend: s.price, seller: s.id, desc: s.desc });
+      Object.assign(p, planTotals(p));
+      renderPlan();
+    });
+    list.append(
+      el("div", { class: "extra" },
+        el("div", {},
+          el("div", { class: "name" }, s.name),
+          el("div", { class: "desc" }, `${t("type_" + s.type)} · ${s.district} · ${rm(s.price)}${s.desc ? " · " + s.desc : ""}`),
+        ),
+        btn,
+      ),
+    );
+  }
+  box.append(list);
 }
 
 // Placeholder QR-like pattern. Not a real payment code.
@@ -132,7 +189,9 @@ function openBooking() {
   sum.append(
     el("p", { style: "margin:0 0 8px" }, `${ORIGINS[p.origin].flag} ${tr(ORIGINS[p.origin].name)} · ${t("dur_" + p.days)}`),
     el("p", { style: "margin:0 0 8px;font-weight:700" }, `${t("total")}: ${rm(p.total)} · ${t("to_kampung")}: ${rm(p.kampung)}`),
-    el("ul", { class: "seller-list" }, ...p.sellers.map((k) => el("li", {}, `${SELLERS[k].name} (${t("sample_badge")})`))),
+    el("ul", { class: "seller-list" },
+      ...p.sellers.map((n) => el("li", {}, `${n} (${t("sample_badge")})`)),
+      ...p.extras.map((x) => el("li", {}, x.name))),
   );
   drawFakeQR(p.total * 31 + p.days);
   document.getElementById("book").showModal();

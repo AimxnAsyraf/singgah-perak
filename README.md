@@ -31,24 +31,32 @@ python3 -m http.server 8000
 
 Or just open `index.html` in a browser. Chart.js and Leaflet are vendored in `assets/vendor/`, so everything except the map tiles works offline.
 
-**Live demo for judges:** open the planner and the dashboard in two tabs. Book a trip in the planner, and the dashboard updates immediately (the booking shows with a green "Langsung" dot).
+**Live demo for judges:**
+1. On `seller.html`, register a kampung seller in Kuala Kangsar.
+2. On the planner, build a 🇹🇭 Thailand, 3 days 2 nights, Heritage trip. The new seller appears under "Peniaga komuniti baharu di laluan anda". Add them, and the kampung share goes up.
+3. Book the trip. On the dashboard (open in a second tab), the booking appears immediately with a green "Langsung" dot.
+4. Scroll to the impact calculator and change the assumptions.
 
 ## Structure
 
 ```
 index.html            Trip planner (tourist view)
-dashboard.html        Tourism Perak dashboard (state view)
+dashboard.html        Tourism Perak dashboard + impact calculator (state view)
+seller.html           Seller sign-up (kampung seller view)
 assets/js/core.js     Origins, stops, sellers, trip builder, demo bookings
 assets/js/i18n.js     UI strings in 5 languages
 assets/js/planner.js  Planner page
 assets/js/dashboard.js Dashboard page
+assets/js/seller.js   Seller sign-up page
 assets/css/style.css  Styles (light + dark mode)
 docs/                 Submission drafts (summary, video script, checklist)
 ```
 
 ## Honest limitations (prototype)
 
-- **Train times are approximate.** They come from third-party timetable sites. Confirm with KTMB before using them in the proposal.
+- **Train times come from a third-party site** (train36.com: Padang Besar timetable of 30 Aug 2025, JB Sentral timetable of Feb 2026). A newer KTMB timetable took effect on 1 June 2026, so confirm with KTMB before using them in the proposal. Update them in `ORIGINS` in `assets/js/core.js`.
+- **Seller sign-ups are saved only in the browser** (localStorage). The DuitNow ID field is not stored or checked.
+- **The impact calculator gives estimates, not forecasts.** It multiplies the state's 2026 target by your assumptions.
 - **All seller names are sample data** and marked "Contoh" in the UI.
 - **The QR code is a placeholder.** No payment is made.
 - Dashboard numbers under "Data prototaip" are generated sample bookings. Only the "Konteks" tiles are real figures (with sources).

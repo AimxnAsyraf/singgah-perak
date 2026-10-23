@@ -33,8 +33,10 @@ const ORIGINS = {
   th: {
     flag: "🇹🇭",
     name: { en: "Thailand (Hat Yai)", ms: "Thailand (Hat Yai)", th: "ไทย (หาดใหญ่)", id: "Thailand (Hat Yai)", zh: "泰国（合艾）" },
+    // train36.com timetable effective 30 Aug 2025. Verify with KTMB.
+    train: { code: "EP 9275", from: "Padang Besar", dep: "09:45", arr: "12:44", src: "train36.com, 30 Aug 2025", url: "https://www.train36.com/ets-train-padang-besar-to-ipoh.html" },
     arrive: {
-      time: "07:00–15:00",
+      time: "12:44",
       title: { en: "Hat Yai → Padang Besar → Ipoh", ms: "Hat Yai → Padang Besar → Ipoh", th: "หาดใหญ่ → ปาดังเบซาร์ → อิโปห์", id: "Hat Yai → Padang Besar → Ipoh", zh: "合艾 → 巴东勿刹 → 怡保" },
       desc: {
         en: "SRT shuttle train to Padang Besar, clear immigration at the station, then KTM ETS south to Ipoh.",
@@ -58,8 +60,10 @@ const ORIGINS = {
   sg: {
     flag: "🇸🇬",
     name: { en: "Singapore (via JB Sentral)", ms: "Singapura (melalui JB Sentral)", th: "สิงคโปร์ (ผ่าน JB Sentral)", id: "Singapura (via JB Sentral)", zh: "新加坡（经JB Sentral）" },
+    // train36.com, February 2026 timetable. Verify with KTMB.
+    train: { code: "EG 9442", from: "JB Sentral", dep: "07:35", arr: "14:46", src: "train36.com, Feb 2026", url: "https://www.train36.com/ets-jb-sentral-to-ipoh.html" },
     arrive: {
-      time: "07:30–15:00",
+      time: "14:46",
       title: { en: "JB Sentral → Ipoh (direct ETS)", ms: "JB Sentral → Ipoh (ETS terus)", th: "JB Sentral → อิโปห์ (ETS ตรง)", id: "JB Sentral → Ipoh (ETS langsung)", zh: "JB Sentral → 怡保（ETS直达）" },
       desc: {
         en: "Cross the Causeway to JB Sentral, then ride the direct ETS to Ipoh (~7 h). From 2027 the RTS Link cuts the border crossing to ~5 minutes.",
@@ -83,8 +87,9 @@ const ORIGINS = {
   id: {
     flag: "🇮🇩",
     name: { en: "Indonesia (fly to KL)", ms: "Indonesia (terbang ke KL)", th: "อินโดนีเซีย (บินมา KL)", id: "Indonesia (terbang ke KL)", zh: "印尼（飞抵吉隆坡）" },
+    train: null, // KL Sentral → Ipoh: many daily ETS services (~2.5 h); no specific train picked yet
     arrive: {
-      time: "08:00–14:30",
+      time: "~14:30",
       title: { en: "KLIA → KL Sentral → Ipoh", ms: "KLIA → KL Sentral → Ipoh", th: "KLIA → KL Sentral → อิโปห์", id: "KLIA → KL Sentral → Ipoh", zh: "KLIA → KL Sentral → 怡保" },
       desc: {
         en: "Fly into Kuala Lumpur, take the airport rail link to KL Sentral, then ETS north to Ipoh (~2.5 h).",
@@ -355,6 +360,42 @@ const TIMES_ARRIVAL = ["15:30", "18:00", "20:00", "22:00"];
 const TIMES_FULL = ["09:00", "11:30", "14:30", "18:30", "21:30"];
 const TIMES_LAST = ["08:30", "10:30"];
 
+// --- Sellers registered on seller.html (demo, stored on this device) --------------
+const SELLERS_KEY = "singgahperak_sellers";
+const SELLER_TYPES = ["homestay", "guide", "food", "craft", "activity"];
+
+function loadRegisteredSellers() {
+  try {
+    return JSON.parse(localStorage.getItem(SELLERS_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveRegisteredSellers(list) {
+  try {
+    localStorage.setItem(SELLERS_KEY, JSON.stringify(list));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+// What a visitor typically spends on a short stopover (a walk and a meal in Ipoh, no night).
+const STOPOVER_STOPS = ["oldtown", "food_ipoh"];
+function stopoverSpend() {
+  return STOPOVER_STOPS.reduce((s, k) => s + STOPS[k].spend, 0);
+}
+
+// Recompute totals after the visitor adds registered sellers to the plan.
+function planTotals(plan) {
+  const stops = plan.items.filter((x) => x.kind === "stop").concat(plan.extras || []);
+  const total = stops.reduce((s, x) => s + x.spend, 0);
+  const kampung = stops.filter((x) => x.seller).reduce((s, x) => s + x.spend, 0);
+  const byDistrict = {};
+  for (const s of stops) byDistrict[s.district] = (byDistrict[s.district] || 0) + s.spend;
+  return { total, kampung, byDistrict };
+}
+
 // Build a plan: { origin, days, nights, items: [{day, time, kind, ...}], totals }
 function buildPlan(originKey, days, interests, halal) {
   const order = interests.length ? interests.slice() : [];
@@ -383,14 +424,9 @@ function buildPlan(originKey, days, interests, halal) {
   LAST_MORNING.forEach((k, i) => push(days, TIMES_LAST[i], k));
   items.push({ day: days, time: "12:30", kind: "rail", leg: "depart" });
 
-  const stops = items.filter((x) => x.kind === "stop");
-  const total = stops.reduce((s, x) => s + x.spend, 0);
-  const kampung = stops.filter((x) => x.seller).reduce((s, x) => s + x.spend, 0);
-  const byDistrict = {};
-  for (const s of stops) byDistrict[s.district] = (byDistrict[s.district] || 0) + s.spend;
-  const sellers = [...new Set(stops.filter((x) => x.seller).map((x) => x.seller))];
-
-  return { origin: originKey, days, nights: days - 1, items, total, kampung, byDistrict, sellers };
+  const plan = { origin: originKey, days, nights: days - 1, items, extras: [] };
+  plan.sellers = [...new Set(items.filter((x) => x.seller).map((x) => SELLERS[x.seller].name))];
+  return Object.assign(plan, planTotals(plan));
 }
 
 // --- Bookings (demo) -------------------------------------------------------------

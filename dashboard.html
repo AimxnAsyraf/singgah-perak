@@ -15,6 +15,7 @@
       <nav class="nav">
         <a href="index.html" data-i18n="nav_planner"></a>
         <a href="dashboard.html" aria-current="page" data-i18n="nav_dashboard"></a>
+        <a href="seller.html" data-i18n="nav_seller"></a>
       </nav>
       <select id="lang" aria-label="Language"></select>
     </div>
@@ -73,6 +74,19 @@
         <div id="map"></div>
       </div>
     </div>
+
+    <div class="section-title" data-i18n="imp_title"></div>
+    <section class="card impact">
+      <p style="margin:0 0 12px;color:var(--ink-2)" data-i18n="imp_sub"></p>
+      <div class="impact-grid">
+        <label class="field"><span class="label" data-i18n="imp_tourists"></span><input class="input" id="imp-tourists" type="number" min="0" step="10000" value="1100000"></label>
+        <label class="field"><span class="label" data-i18n="imp_pct"></span><input class="input" id="imp-pct" type="number" min="0" max="100" step="1" value="5"></label>
+        <label class="field"><span class="label" data-i18n="imp_spend"></span><input class="input" id="imp-spend" type="number" min="0" step="10"></label>
+        <label class="field"><span class="label" data-i18n="imp_kampung"></span><input class="input" id="imp-kampung" type="number" min="0" max="100" step="1"></label>
+      </div>
+      <div class="tiles three" id="imp-out"></div>
+      <p class="note" data-i18n="imp_assume"></p>
+    </section>
 
     <div class="section-title" data-i18n="recent"></div>
     <div class="card" style="overflow-x:auto">
