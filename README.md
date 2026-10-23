@@ -3,6 +3,8 @@
 **Jangan sekadar singgah. Bermalamlah di Perak.**
 *Don't just pass through. Stay the night in Perak.*
 
+New here? Read [`docs/how-it-works.md`](docs/how-it-works.md) for the full flow and how the code fits together.
+
 Prototype for **Perak Social Innovation – Hack2Impact 2026** (Institut Darul Ridzuan).
 Theme: **A. Pembangunan Ekonomi dan Daya Saing Negeri**, covering tourism (pelancongan), entrepreneurship (keusahawanan) and jobs (peluang pekerjaan).
 
