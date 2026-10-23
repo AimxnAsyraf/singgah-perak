@@ -55,6 +55,6 @@ docs/                 Submission drafts (summary, video script, checklist)
 
 ## Submission
 
-Deadline: **Thursday, 29 October 2026**, to publish@idrperak.com. See [`docs/semakan-penghantaran.md`](docs/semakan-penghantaran.md).
+Deadline: **Thursday, 29 October 2026**, to publish@idrperak.com. See [`docs/build-plan.md`](docs/build-plan.md) for the build schedule and [`docs/semakan-penghantaran.md`](docs/semakan-penghantaran.md) for the checklist.
 
 Libraries: [Chart.js](https://www.chartjs.org/) 4.4.1 (MIT), [Leaflet](https://leafletjs.com/) 1.9.4 (BSD-2). Map data © OpenStreetMap contributors.
