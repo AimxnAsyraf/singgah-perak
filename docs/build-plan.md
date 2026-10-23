@@ -35,7 +35,7 @@ The guideline (section 2.1-III) lists six criteria. Every feature below exists t
 | M1 | **Check ETS times with KTMB** and update `core.js` with real departure/arrival times per origin | Feasibility: a judge who knows the trains will catch wrong times | 1–2 h |
 | M2 | **"Singgah vs Bermalam" comparison card** on each plan: spending as a day-tripper vs with nights in Perak | Turns the core problem into one number for the pitch | 2 h |
 | M3 | **Problem section on the landing page**: 3 sourced stats + "how it works" in 3 steps | Judges who open the link cold understand the idea in 20 seconds | 2 h |
-| M4 | **Seller sign-up page** (`seller.html`): a kampung seller registers name, district, type, price and DuitNow QR. Saved on the device and appears in the planner. | Shows the community side, not just a tourist app. This is what makes it *social* innovation. | 4 h |
+| M4 | **Seller sign-up page** (`public/seller.html`): a kampung seller registers name, district, type, price and DuitNow QR. Saved on the device and appears in the planner. | Shows the community side, not just a tourist app. This is what makes it *social* innovation. | 4 h |
 | M5 | **Impact calculator** on the dashboard: "If X% of the 1.1M target stays 1 extra night → RM Y extra spend, RM Z to kampung sellers". Assumptions labelled clearly. | Impact criterion; a strong slide/poster number | 2–3 h |
 | M6 | **Deploy to GitHub Pages** and test the link on a phone | The demo link is a required submission item | 30 min |
 | M7 | **Demo video (MP4)** recorded from the live site, as a backup in case the link fails | Prototype material + video are both required | covered on Day 5 |
