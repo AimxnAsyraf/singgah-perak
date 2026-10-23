@@ -25,11 +25,11 @@ Rail-first trip packages that make Perak a place to stay, not a stopover:
 It's a static site with no build step and no dependencies to install.
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory public
 # open http://localhost:8000
 ```
 
-Or just open `index.html` in a browser. Chart.js and Leaflet are vendored in `assets/vendor/`, so everything except the map tiles works offline.
+Or just open `public/index.html` in a browser. Chart.js and Leaflet are vendored in `public/assets/vendor/`, so everything except the map tiles works offline.
 
 **Live demo for judges:**
 1. On `seller.html`, register a kampung seller in Kuala Kangsar.
@@ -37,24 +37,38 @@ Or just open `index.html` in a browser. Chart.js and Leaflet are vendored in `as
 3. Book the trip. On the dashboard (open in a second tab), the booking appears immediately with a green "Langsung" dot.
 4. Scroll to the impact calculator and change the assumptions.
 
+## Deploy (Cloudflare Pages)
+
+Connect the repo in Cloudflare (**Workers & Pages → Create application → Pages → Connect to Git**) with:
+
+| Setting | Value |
+|---|---|
+| Production branch | `main` |
+| Framework preset | None |
+| Build command | *(empty)* |
+| Build output directory | `public` |
+
+Only `public/` is served, so `docs/` and the README stay in GitHub. Every push to `main` redeploys.
+
 ## Structure
 
 ```
-index.html            Trip planner (tourist view)
-dashboard.html        Tourism Perak dashboard + impact calculator (state view)
-seller.html           Seller sign-up (kampung seller view)
-assets/js/core.js     Origins, stops, sellers, trip builder, demo bookings
-assets/js/i18n.js     UI strings in 5 languages
-assets/js/planner.js  Planner page
-assets/js/dashboard.js Dashboard page
-assets/js/seller.js   Seller sign-up page
-assets/css/style.css  Styles (light + dark mode)
-docs/                 Submission drafts (summary, video script, checklist)
+public/                      The website (the only folder that gets deployed)
+  index.html                 Trip planner (tourist view)
+  dashboard.html             Tourism Perak dashboard + impact calculator (state view)
+  seller.html                Seller sign-up (kampung seller view)
+  assets/js/core.js          Origins, stops, sellers, trip builder, demo bookings
+  assets/js/i18n.js          UI strings in 5 languages
+  assets/js/planner.js       Planner page
+  assets/js/dashboard.js     Dashboard page
+  assets/js/seller.js        Seller sign-up page
+  assets/css/style.css       Styles (light + dark mode)
+docs/                        Submission drafts (not deployed)
 ```
 
 ## Honest limitations (prototype)
 
-- **Train times come from a third-party site** (train36.com: Padang Besar timetable of 30 Aug 2025, JB Sentral timetable of Feb 2026). A newer KTMB timetable took effect on 1 June 2026, so confirm with KTMB before using them in the proposal. Update them in `ORIGINS` in `assets/js/core.js`.
+- **Train times come from a third-party site** (train36.com: Padang Besar timetable of 30 Aug 2025, JB Sentral timetable of Feb 2026). A newer KTMB timetable took effect on 1 June 2026, so confirm with KTMB before using them in the proposal. Update them in `ORIGINS` in `public/assets/js/core.js`.
 - **Seller sign-ups are saved only in the browser** (localStorage). The DuitNow ID field is not stored or checked.
 - **The impact calculator gives estimates, not forecasts.** It multiplies the state's 2026 target by your assumptions.
 - **All seller names are sample data** and marked "Contoh" in the UI.

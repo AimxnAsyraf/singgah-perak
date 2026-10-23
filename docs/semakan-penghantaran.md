@@ -7,8 +7,8 @@
 - [ ] **Borang Penyertaan (Lampiran A):** PDF atau imbasan JPG/PNG, bertandatangan (dan cop institusi jika berkaitan)
 - [ ] **Ringkasan Projek:** PDF, maksimum 3 halaman. Draf: [`ringkasan-projek.md`](ringkasan-projek.md)
 - [ ] **Video Pitching:** 2–3 minit, MP4/MOV atau pautan ("Anyone with the link"). Skrip: [`skrip-video.md`](skrip-video.md)
-- [ ] **Bahan Demonstrasi/Prototaip:** pautan demo URL (contohnya GitHub Pages) atau rakaman MP4
-- [ ] Sahkan jadual ETS dengan KTMB dan kemas kini masa dalam `assets/js/core.js`
+- [ ] **Bahan Demonstrasi/Prototaip:** pautan demo URL (Cloudflare Pages, contohnya singgah-perak.pages.dev) atau rakaman MP4
+- [ ] Sahkan jadual ETS dengan KTMB dan kemas kini masa dalam `public/assets/js/core.js`
 - [ ] Semak semula semua angka dan pautan sumber
 
 ## Jika tersenarai sebagai finalis (16 November 2026, Perak Economic Outlook 2027)
