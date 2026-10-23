@@ -3,6 +3,7 @@
 const KTMB_TRAINS = {
   "generated": "2026-10-23",
   "checkedFrom": "2026-10-23",
+  "daysCovered": 15,
   "feedVersion": null,
   "feedValidUntil": null,
   "source": "KTMB GTFS Static, data.gov.my",
@@ -10,66 +11,66 @@ const KTMB_TRAINS = {
   "routes": {
     "th": {
       "arrive": {
-        "code": "9273",
+        "code": "ETS 9273",
         "service": "ETS Electric Train Service Padang Besar - JB Sentral",
         "from": "Padang Besar",
         "to": "Ipoh",
         "dep": "11:05",
         "arr": "14:03",
-        "daysPerWeek": 3.8
+        "daysPerWeek": 7.0
       },
       "depart": {
-        "code": "9226",
+        "code": "ETS 9226",
         "service": "ETS Electric Train Service Padang Besar - JB Sentral",
         "from": "Ipoh",
         "to": "Padang Besar",
         "dep": "12:19",
         "arr": "15:16",
-        "daysPerWeek": 3.8
+        "daysPerWeek": 7.0
       },
-      "inboundPerDay": 9
+      "inboundOptions": 9
     },
     "sg": {
       "arrive": {
-        "code": "9442",
+        "code": "ETS 9442",
         "service": "ETS Electric Train Service Padang Besar - JB Sentral",
         "from": "JB Sentral",
         "to": "Ipoh",
         "dep": "07:35",
         "arr": "14:46",
-        "daysPerWeek": 3.8
+        "daysPerWeek": 7.0
       },
       "depart": {
-        "code": "9449",
+        "code": "ETS 9449",
         "service": "ETS Electric Train Service Padang Besar - JB Sentral",
         "from": "Ipoh",
         "to": "JB Sentral",
         "dep": "15:10",
         "arr": "22:30",
-        "daysPerWeek": 3.8
+        "daysPerWeek": 7.0
       },
-      "inboundPerDay": 3
+      "inboundOptions": 3
     },
     "id": {
       "arrive": {
-        "code": "9442",
+        "code": "ETS 9442",
         "service": "ETS Electric Train Service Padang Besar - JB Sentral",
         "from": "KL Sentral",
         "to": "Ipoh",
         "dep": "12:16",
         "arr": "14:46",
-        "daysPerWeek": 3.8
+        "daysPerWeek": 7.0
       },
       "depart": {
-        "code": "9049",
+        "code": "ETS 9049",
         "service": "ETS Electric Train Service Padang Besar - JB Sentral",
         "from": "Ipoh",
         "to": "KL Sentral",
         "dep": "12:05",
         "arr": "14:39",
-        "daysPerWeek": 3.8
+        "daysPerWeek": 7.0
       },
-      "inboundPerDay": 28
+      "inboundOptions": 28
     }
   }
 };
