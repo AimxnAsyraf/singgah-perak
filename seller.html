@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SinggahPerak Sellers</title>
+  <meta name="description" content="Kampung sellers in Perak list their homestays, guiding, food and crafts on SinggahPerak.">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="index.html">Singgah<span>Perak</span></a>
+      <nav class="nav">
+        <a href="index.html" data-i18n="nav_planner"></a>
+        <a href="dashboard.html" data-i18n="nav_dashboard"></a>
+        <a href="seller.html" aria-current="page" data-i18n="nav_seller"></a>
+      </nav>
+      <select id="lang" aria-label="Language"></select>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1 data-i18n="sel_title"></h1>
+      <p data-i18n="sel_sub"></p>
+    </section>
+
+    <div class="grid-2">
+      <form id="seller-form" class="card">
+        <div class="field">
+          <label class="label" for="f-name" data-i18n="f_name"></label>
+          <input class="input" id="f-name" name="name" required maxlength="60">
+        </div>
+        <div class="field">
+          <label class="label" for="f-type" data-i18n="f_type"></label>
+          <select class="input" id="f-type" name="type"></select>
+        </div>
+        <div class="field">
+          <label class="label" for="f-district" data-i18n="f_district"></label>
+          <select class="input" id="f-district" name="district"></select>
+        </div>
+        <div class="field">
+          <label class="label" for="f-price" data-i18n="f_price"></label>
+          <input class="input" id="f-price" name="price" type="number" min="1" max="2000" step="1" required>
+        </div>
+        <div class="field">
+          <label class="label" for="f-desc" data-i18n="f_desc"></label>
+          <input class="input" id="f-desc" name="desc" maxlength="100">
+        </div>
+        <div class="field">
+          <label class="label" for="f-duitnow" data-i18n="f_duitnow"></label>
+          <input class="input" id="f-duitnow" name="duitnow" maxlength="40" placeholder="012-345 6789">
+        </div>
+        <div class="field">
+          <label class="toggle"><input type="checkbox" name="consent" required> <span data-i18n="f_consent"></span></label>
+        </div>
+        <button class="btn" type="submit" data-i18n="f_submit"></button>
+        <p class="note" data-i18n="sel_note"></p>
+      </form>
+
+      <div>
+        <section class="card">
+          <h2 class="section-title" style="margin-top:0" data-i18n="sel_why_title"></h2>
+          <ul class="why-list">
+            <li data-i18n="sel_why_1"></li>
+            <li data-i18n="sel_why_2"></li>
+            <li data-i18n="sel_why_3"></li>
+          </ul>
+        </section>
+        <section class="card" style="margin-top:16px">
+          <h2 class="section-title" style="margin-top:0" data-i18n="sel_list"></h2>
+          <div id="seller-list"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="wrap">
+    <span data-i18n="proto_note"></span>
+  </footer>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/seller.js"></script>
+</body>
+</html>

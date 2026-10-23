@@ -135,6 +135,34 @@ function renderMap(byDistrict) {
   }
 }
 
+// Impact calculator: defaults come from the prototype's own averages.
+function renderImpact(a) {
+  const nightsTotal = a.avgNights * a.count;
+  const spendBox = document.getElementById("imp-spend");
+  const kampungBox = document.getElementById("imp-kampung");
+  if (!spendBox.value) spendBox.value = Math.round(a.total / nightsTotal / 10) * 10;
+  if (!kampungBox.value) kampungBox.value = Math.round((a.kampung / a.total) * 100);
+
+  const num = (id) => Math.max(0, Number(document.getElementById(id).value) || 0);
+  const nights = num("imp-tourists") * (Math.min(num("imp-pct"), 100) / 100);
+  const total = nights * num("imp-spend");
+  const kampung = total * (Math.min(num("imp-kampung"), 100) / 100);
+  const big = (n) => (n >= 1e6 ? `RM${(n / 1e6).toFixed(1)}M` : rm(n));
+
+  const out = document.getElementById("imp-out");
+  out.textContent = "";
+  out.append(
+    tile(Math.round(nights).toLocaleString("en-MY"), t("imp_nights")),
+    tile(big(total), t("imp_total")),
+    tile(big(kampung), t("imp_to_kampung")),
+  );
+}
+
+let lastAgg = null;
+for (const id of ["imp-tourists", "imp-pct", "imp-spend", "imp-kampung"]) {
+  document.getElementById(id).addEventListener("input", () => lastAgg && renderImpact(lastAgg));
+}
+
 function render() {
   applyI18n();
   const live = loadBookings();
@@ -163,6 +191,8 @@ function render() {
   fillTable("tb-district", [t("c_district"), t("col_value")], districts.map(([d, v]) => [d, rm(v)]));
 
   renderMap(a.byDistrict);
+  lastAgg = a;
+  renderImpact(a);
 
   const recent = all.slice().sort((x, y) => y.ts - x.ts).slice(0, 10);
   fillTable("tb-recent",
